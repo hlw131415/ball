@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双色球选号</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body,html{
+            height: 100%;
+        }
+        .ball-container{
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .ball-box{
+            width: 370px;
+            height: 500px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: column;
+        }
+        #ball-show{
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .red-ball{
+            width: 25px;
+            height: 25px;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-size: 14px;
+            background: url('./ball_red.gif');
+        }
+        .blue-ball{
+            width: 25px;
+            height: 25px;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-size: 14px;
+            background: url('./ball_blue.gif');
+        }
+        .btn{
+            width: 100px;
+            height: 50px;
+            background: #ff5000;
+            line-height: 50px;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 400;
+            border-radius: 3px;
+        }
+        .btn:hover{
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+  <div class="ball-container">
+    <div class="ball-box">
+        <div id="ball-show">
+           
+        </div>
+        <button class="btn">开始选号</button>
+    </div>
+  </div>
+</body>
+<script>
+    var ball = document.getElementById('ball-show')
+    var btn = document.querySelector('.btn')
+    var arr = []
+    var blueNum = 0
+    start()
+    //开始选号
+    function start(){
+        initNum()
+        initRedBall()
+        initBlueBall()
+    }
+    function randomInteger(min, max) {
+        let random = min + Math.random() * (max + 1 - min);
+        return Math.floor(random);
+    }
+    //生成不重复的随机数
+    function initNum(){
+        do {
+            for (let i = 0; i < (6 - arr.length); i++) {
+                let random = randomInteger(1, 33)
+                if (arr.indexOf(random) == -1) {
+                    arr.push(random);
+                } else {
+                    break;
+                }
+            }
+        } while (arr.length != 6)
+    }
+    //生成红球
+    function initRedBall(){
+        arr.sort((a,b)=>{return a - b})
+        for(var i =0 ;i<arr.length;i++){
+            var redBall = document.createElement('div')
+            redBall.classList.add('red-ball')
+            redBall.innerHTML = Number(arr[i]) < 10 ? '0'+arr[i] : arr[i]
+            ball.appendChild(redBall)
+        }
+    }
+    //生成篮球
+    function initBlueBall(){
+        var blueNum = ''
+        var blueBall = document.createElement('div')
+        blueBall.classList.add('blue-ball')
+        blueNum = Number(Math.round(Math.random()*(16-1)+1))
+        blueNum = blueNum < 10 ? '0'+blueNum : blueNum
+        blueBall.innerHTML = blueNum
+        ball.appendChild(blueBall)
+    }
+    //清除数据
+    function clearInner(){
+        ball.innerHTML = ''
+        arr = []
+    }
+    btn.onclick = function(){
+        clearInner()
+        start()
+    }
+    
+</script>
+</html>
